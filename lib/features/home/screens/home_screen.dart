@@ -4,6 +4,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:natal_iq/router/nav_helpers.dart';
 import 'package:natal_iq/features/auth/services/auth_service.dart';
+import 'package:natal_iq/features/community/models/community_post.dart';
+import 'package:natal_iq/features/community/services/community_service.dart';
+import 'package:natal_iq/features/community/widgets/post_card.dart';
 import 'package:natal_iq/features/home/widgets/journal_suggestions_section.dart';
 import 'package:natal_iq/core/theme/app_theme.dart';
 import 'package:natal_iq/core/widgets/common.dart';
@@ -28,12 +31,6 @@ class HomeScreen extends StatelessWidget {
     (path: '/caregiver', label: 'Caregiver mode', icon: LucideIcons.handHeart, note: 'For family'),
   ];
 
-  static const _communityPreview = [
-    (author: 'Anita', week: 32, body: 'First time feeling hiccups in the belly — such a magical moment 💗', likes: 42, replies: 12),
-    (author: 'Meera', week: 24, body: 'Anyone else struggling with heartburn? What worked for you?', likes: 18, replies: 6),
-    (author: 'Kavya', week: 12, body: 'Iron supplements + nausea — any tips?', likes: 9, replies: 4),
-  ];
-
   static String _greeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'Good morning';
@@ -56,23 +53,28 @@ class HomeScreen extends StatelessWidget {
     final progress = week / totalWeeks;
 
     return MobileShell(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push('/journal'),
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.primaryForeground,
+        child: const Icon(LucideIcons.bookHeart),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 32, 20, 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SectionLabel(_greeting()),
-                    const SizedBox(height: 2),
-                    Text(name, style: displayFont(fontSize: 30, fontWeight: FontWeight.w600)),
-                  ],
+                SectionLabel(_greeting()),
+                const SizedBox(height: 2),
+                Text(
+                  name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: displayFont(fontSize: 30, fontWeight: FontWeight.w600),
                 ),
-                InitialAvatar(letter: name[0].toUpperCase(), tone: AppTone.blush, size: 44),
               ],
             ),
           ),
@@ -176,18 +178,33 @@ class HomeScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               mainAxisSpacing: 12,
               crossAxisSpacing: 12,
-              childAspectRatio: 1.5,
+              childAspectRatio: 1.3,
               children: _quickTiles.map((t) {
                 return AppCard(
                   onTap: () => navigateTo(context, t.path),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       ToneIconTile(icon: t.icon, tone: t.tone),
                       const SizedBox(height: 10),
-                      Text(t.label, style: sansFont(fontSize: 14, fontWeight: FontWeight.w700)),
+                      Flexible(
+                        child: Text(
+                          t.label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: sansFont(fontSize: 14, fontWeight: FontWeight.w700),
+                        ),
+                      ),
                       const SizedBox(height: 2),
-                      Text('Tap to open', style: sansFont(fontSize: 11, color: AppColors.mutedForeground)),
+                      Flexible(
+                        child: Text(
+                          'Tap to open',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: sansFont(fontSize: 11, color: AppColors.mutedForeground),
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -217,57 +234,31 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 SizedBox(
                   height: 148,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.only(right: 20),
-                    itemCount: _communityPreview.length,
-                    separatorBuilder: (_, _) => const SizedBox(width: 12),
-                    itemBuilder: (context, i) {
-                      final p = _communityPreview[i];
-                      return SizedBox(
-                        width: 260,
-                        child: AppCard(
-                          onTap: () => context.go('/community'),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  InitialAvatar(letter: p.author[0], tone: AppTone.peach, size: 32),
-                                  const SizedBox(width: 8),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(p.author, style: sansFont(fontSize: 13, fontWeight: FontWeight.w700)),
-                                      const SizedBox(height: 2),
-                                      Text('Week ${p.week}', style: sansFont(fontSize: 10, color: AppColors.mutedForeground)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Expanded(
-                                child: Text(
-                                  p.body,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: sansFont(fontSize: 13, height: 1.4),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(LucideIcons.heart, size: 12, color: AppColors.mutedForeground),
-                                  const SizedBox(width: 4),
-                                  Text('${p.likes}', style: sansFont(fontSize: 11, color: AppColors.mutedForeground)),
-                                  const SizedBox(width: 12),
-                                  const Icon(LucideIcons.messageSquare, size: 12, color: AppColors.mutedForeground),
-                                  const SizedBox(width: 4),
-                                  Text('${p.replies}', style: sansFont(fontSize: 11, color: AppColors.mutedForeground)),
-                                ],
-                              ),
-                            ],
+                  child: StreamBuilder<List<CommunityPost>>(
+                    stream: CommunityService.watchPosts(limit: 5),
+                    builder: (context, snapshot) {
+                      final posts = snapshot.data ?? const <CommunityPost>[];
+                      if (posts.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: Text(
+                            'No posts yet — be the first to share something.',
+                            style: sansFont(fontSize: 12, color: AppColors.mutedForeground),
                           ),
-                        ),
+                        );
+                      }
+                      return ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.only(right: 20),
+                        itemCount: posts.length,
+                        separatorBuilder: (_, _) => const SizedBox(width: 12),
+                        itemBuilder: (context, i) {
+                          final p = posts[i];
+                          return SizedBox(
+                            width: 260,
+                            child: PostCard(post: p, onTap: () => context.push('/community/${p.id}')),
+                          );
+                        },
                       );
                     },
                   ),

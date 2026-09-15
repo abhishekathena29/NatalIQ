@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.natalIq</string>
+	<string>com.nataliq.app</string>
 	<key>PROJECT_ID</key>
 	<string>natal-iq</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:835089855797:ios:421331f9193fbdb7f7c87c</string>
+	<string>1:835089855797:ios:b977fc4f7369c186f7c87c</string>
 </dict>
 </plist>

@@ -58,18 +58,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCJ68JXoBIPPxYTsez8ZwovoWt6h6rPhcs',
-    appId: '1:835089855797:android:5cbad2ae0b743e61f7c87c',
+    appId: '1:835089855797:android:752b728dc98e3bcef7c87c',
     messagingSenderId: '835089855797',
     projectId: 'natal-iq',
     storageBucket: 'natal-iq.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDM1wLTLuKV4NHHydGbcn3JmW0dluPTVMY',
-    appId: '1:835089855797:ios:421331f9193fbdb7f7c87c',
+    appId: '1:835089855797:ios:b977fc4f7369c186f7c87c',
     messagingSenderId: '835089855797',
     projectId: 'natal-iq',
     storageBucket: 'natal-iq.firebasestorage.app',
-    iosBundleId: 'com.example.natalIq',
+    iosBundleId: 'com.nataliq.app',
   );
 }

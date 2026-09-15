@@ -4,8 +4,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:natal_iq/features/chat/models/chat_message.dart';
-import 'package:natal_iq/features/chat/services/aanya_ai.dart';
 import 'package:natal_iq/features/chat/services/chat_storage.dart';
+import 'package:natal_iq/features/chat/services/groq_ai_service.dart';
 import 'package:natal_iq/core/theme/app_theme.dart';
 import 'package:natal_iq/core/widgets/shimmer_text.dart';
 
@@ -18,10 +18,11 @@ const _suggestions = [
   'Gentle exercises safe for me right now?',
 ];
 
-/// Port of `src/routes/chat.$threadId.tsx`. There is no reachable backend to
-/// stream real model responses from (the React app posts to a private AI
-/// gateway), so replies come from `AanyaAi`, a small local stand-in — the
-/// screen, persistence, and turn-taking flow otherwise match 1:1.
+/// Port of `src/routes/chat.$threadId.tsx`. Replies come from
+/// `GroqAiService`, which calls Groq's chat completions API using a key/model
+/// fetched from Firestore, falling back to a small local stand-in
+/// (`AanyaAi`) if that's unavailable — the screen, persistence, and
+/// turn-taking flow otherwise match the original 1:1.
 class ChatThreadScreen extends StatefulWidget {
   final String threadId;
   final String? seedQuestion;
@@ -116,7 +117,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
     _scrollToBottom();
 
     try {
-      final reply = await AanyaAi.reply(text);
+      final reply = await GroqAiService.reply(_messages);
       if (!mounted) return;
       setState(() {
         _messages.add(ChatMessage(id: _uuid.v4(), role: ChatRole.assistant, text: reply));

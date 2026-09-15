@@ -4,6 +4,8 @@ import 'package:natal_iq/features/more/screens/caregiver_screen.dart';
 import 'package:natal_iq/features/chat/screens/chat_entry_screen.dart';
 import 'package:natal_iq/features/chat/screens/chat_thread_screen.dart';
 import 'package:natal_iq/features/community/screens/community_screen.dart';
+import 'package:natal_iq/features/community/screens/create_post_screen.dart';
+import 'package:natal_iq/features/community/screens/post_detail_screen.dart';
 import 'package:natal_iq/features/more/screens/doctors_screen.dart';
 import 'package:natal_iq/features/home/screens/home_screen.dart';
 import 'package:natal_iq/features/journal/screens/journal_entry_screen.dart';
@@ -56,6 +58,11 @@ final appRouter = GoRouter(
     ),
     GoRoute(path: '/track', builder: (context, state) => const TrackScreen()),
     GoRoute(path: '/community', builder: (context, state) => const CommunityScreen()),
+    GoRoute(path: '/community/compose', builder: (context, state) => const CreatePostScreen()),
+    GoRoute(
+      path: '/community/:postId',
+      builder: (context, state) => PostDetailScreen(postId: state.pathParameters['postId']!),
+    ),
     GoRoute(path: '/more', builder: (context, state) => const MoreScreen()),
     GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
     GoRoute(path: '/learn', builder: (context, state) => const LearnScreen()),

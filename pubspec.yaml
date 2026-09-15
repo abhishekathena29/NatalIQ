@@ -46,6 +46,7 @@ dependencies:
   home_widget:
   flutter_local_notifications:
   timezone:
+  http:
 
 dev_dependencies:
   flutter_test:

@@ -48,9 +48,17 @@ class AuthService extends ChangeNotifier {
   }
 
   bool get isLoggedIn => _user != null;
+  String? get uid => _user?.uid;
   String? get email => _user?.email;
   OnboardingInfo? get onboarding => _onboarding;
   bool get hasOnboarded => _onboarding != null;
+
+  /// Best-effort display name for attributing content (e.g. community posts)
+  /// to the current user, falling back the same way Home's greeting does.
+  String get displayName {
+    final name = _onboarding?.name.trim();
+    return (name != null && name.isNotEmpty) ? name : 'Member';
+  }
 
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();

@@ -28,6 +28,7 @@ class MobileShell extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final bool hideNav;
+  final Widget? floatingActionButton;
 
   const MobileShell({
     super.key,
@@ -35,6 +36,7 @@ class MobileShell extends StatelessWidget {
     this.title,
     this.subtitle,
     this.hideNav = false,
+    this.floatingActionButton,
   });
 
   bool _isActive(String location, String path) {
@@ -77,6 +79,14 @@ class MobileShell extends StatelessWidget {
                         location: location,
                         isActive: _isActive,
                       ),
+                    ),
+                  if (floatingActionButton != null)
+                    Positioned(
+                      right: 20,
+                      // Clears the floating bottom-nav pill (height ~56px + its
+                      // own 12px offset) when the nav is visible.
+                      bottom: hideNav ? 20 : 88,
+                      child: floatingActionButton!,
                     ),
                 ],
               ),
