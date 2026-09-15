@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "835089855797",
+    "project_id": "natal-iq",
+    "storage_bucket": "natal-iq.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:835089855797:android:5cbad2ae0b743e61f7c87c",
+        "android_client_info": {
+          "package_name": "com.example.natal_iq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ68JXoBIPPxYTsez8ZwovoWt6h6rPhcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
