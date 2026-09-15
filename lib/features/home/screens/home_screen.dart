@@ -233,7 +233,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 SizedBox(
-                  height: 148,
+                  height: 168,
                   child: StreamBuilder<List<CommunityPost>>(
                     stream: CommunityService.watchPosts(limit: 5),
                     builder: (context, snapshot) {

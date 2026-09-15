@@ -82,18 +82,33 @@ class LearnScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
-                  childAspectRatio: 1.4,
+                  childAspectRatio: 1.15,
                   children: _modules.map((m) {
                     return AppCard(
                       onTap: () => context.go('/chat'),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           ToneIconTile(icon: m.icon, tone: AppTone.peach),
                           const SizedBox(height: 10),
-                          Text(m.title, style: sansFont(fontSize: 14, fontWeight: FontWeight.w700)),
+                          Flexible(
+                            child: Text(
+                              m.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: sansFont(fontSize: 14, fontWeight: FontWeight.w700),
+                            ),
+                          ),
                           const SizedBox(height: 2),
-                          Text(m.tag, style: sansFont(fontSize: 11, color: AppColors.mutedForeground)),
+                          Flexible(
+                            child: Text(
+                              m.tag,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: sansFont(fontSize: 11, color: AppColors.mutedForeground),
+                            ),
+                          ),
                         ],
                       ),
                     );

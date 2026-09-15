@@ -13,7 +13,7 @@ class PostCard extends StatelessWidget {
   final VoidCallback? onTap;
   final int bodyMaxLines;
 
-  const PostCard({super.key, required this.post, this.onTap, this.bodyMaxLines = 3});
+  const PostCard({super.key, required this.post, this.onTap, this.bodyMaxLines = 2});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,7 @@ class PostCard extends StatelessWidget {
       onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
