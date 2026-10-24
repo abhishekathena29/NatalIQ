@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// Id used for posts created before communities existed, and as the
+/// always-present default community new users land in.
+const kGeneralCommunityId = 'general';
+
 class CommunityPost {
   final String id;
+  final String communityId;
   final String authorUid;
   final String authorName;
   final String body;
@@ -12,6 +17,7 @@ class CommunityPost {
 
   const CommunityPost({
     required this.id,
+    required this.communityId,
     required this.authorUid,
     required this.authorName,
     required this.body,
@@ -25,6 +31,7 @@ class CommunityPost {
     final data = doc.data() ?? const {};
     return CommunityPost(
       id: doc.id,
+      communityId: data['communityId'] as String? ?? kGeneralCommunityId,
       authorUid: data['authorUid'] as String? ?? '',
       authorName: data['authorName'] as String? ?? 'Member',
       body: data['body'] as String? ?? '',
@@ -36,6 +43,7 @@ class CommunityPost {
   }
 
   Map<String, dynamic> toJson() => {
+        'communityId': communityId,
         'authorUid': authorUid,
         'authorName': authorName,
         'body': body,

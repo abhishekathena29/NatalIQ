@@ -4,20 +4,33 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:natal_iq/core/theme/app_theme.dart';
 import 'package:natal_iq/core/widgets/mobile_shell.dart';
-import 'package:natal_iq/features/community/models/community_post.dart';
+import 'package:natal_iq/features/community/models/community.dart';
 import 'package:natal_iq/features/community/services/community_service.dart';
-import 'package:natal_iq/features/community/widgets/post_card.dart';
+import 'package:natal_iq/features/community/widgets/community_card.dart';
 
-class CommunityScreen extends StatelessWidget {
+/// Communities hub — browse, join, or create a community. Tapping one opens
+/// its own post feed.
+class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
+
+  @override
+  State<CommunityScreen> createState() => _CommunityScreenState();
+}
+
+class _CommunityScreenState extends State<CommunityScreen> {
+  @override
+  void initState() {
+    super.initState();
+    CommunityService.ensureGeneralCommunityExists();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MobileShell(
       title: 'Community',
-      subtitle: 'Kind, moderated, safe',
+      subtitle: 'Find your people',
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/community/compose'),
+        onPressed: () => context.push('/community/new'),
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.primaryForeground,
         child: const Icon(LucideIcons.plus),
@@ -41,15 +54,15 @@ class CommunityScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Be kind — this is a peer support space, not medical advice.',
+                      'Join a community to follow it, or start your own — be kind, this is peer support, not medical advice.',
                       style: sansFont(fontSize: 12, color: AppColors.sageForeground),
                     ),
                   ),
                 ],
               ),
             ),
-            StreamBuilder<List<CommunityPost>>(
-              stream: CommunityService.watchPosts(),
+            StreamBuilder<List<Community>>(
+              stream: CommunityService.watchCommunities(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Padding(
@@ -57,13 +70,13 @@ class CommunityScreen extends StatelessWidget {
                     child: Center(child: CircularProgressIndicator()),
                   );
                 }
-                final posts = snapshot.data ?? const <CommunityPost>[];
-                if (posts.isEmpty) {
+                final communities = snapshot.data ?? const <Community>[];
+                if (communities.isEmpty) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Center(
                       child: Text(
-                        'No posts yet. Be the first to share something.',
+                        'No communities yet. Start the first one.',
                         textAlign: TextAlign.center,
                         style: sansFont(fontSize: 13, color: AppColors.mutedForeground),
                       ),
@@ -71,19 +84,19 @@ class CommunityScreen extends StatelessWidget {
                   );
                 }
                 return Column(
-                  children: posts
-                      .map((p) => Padding(
+                  children: communities
+                      .map((c) => Padding(
                             padding: const EdgeInsets.only(bottom: 12),
-                            child: PostCard(
-                              post: p,
-                              bodyMaxLines: 6,
-                              onTap: () => context.push('/community/${p.id}'),
+                            child: CommunityCard(
+                              community: c,
+                              onTap: () => context.push('/community/${c.id}'),
                             ),
                           ))
                       .toList(),
                 );
               },
             ),
+            const SizedBox(height: 80),
           ],
         ),
       ),

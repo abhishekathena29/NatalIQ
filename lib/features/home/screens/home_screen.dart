@@ -256,7 +256,7 @@ class HomeScreen extends StatelessWidget {
                           final p = posts[i];
                           return SizedBox(
                             width: 260,
-                            child: PostCard(post: p, onTap: () => context.push('/community/${p.id}')),
+                            child: PostCard(post: p, onTap: () => context.push('/community/${p.communityId}/post/${p.id}')),
                           );
                         },
                       );

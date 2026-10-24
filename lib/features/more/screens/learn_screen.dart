@@ -16,12 +16,13 @@ class LearnScreen extends StatelessWidget {
   ];
 
   static const _modules = [
-    (title: 'Nutrition & diet', icon: LucideIcons.apple, tag: '12 lessons'),
-    (title: 'Common conditions', icon: LucideIcons.heartPulse, tag: 'Anemia · GDM · Preeclampsia'),
-    (title: 'Baby development', icon: LucideIcons.baby, tag: 'Week by week'),
-    (title: 'Mental well-being', icon: LucideIcons.brain, tag: 'Calm & connect'),
-    (title: 'Doctor visits', icon: LucideIcons.shield, tag: 'What to expect'),
-    (title: 'Myths vs facts', icon: LucideIcons.sparkles, tag: '8 quick reads'),
+    (title: 'Nutrition & diet', icon: LucideIcons.apple, tag: '14 lessons', path: '/learn/nutrition'),
+    (title: 'Common conditions', icon: LucideIcons.heartPulse, tag: '8 lessons', path: '/learn/conditions'),
+    (title: 'Baby development', icon: LucideIcons.baby, tag: 'Coming soon', path: null),
+    (title: 'Mental well-being', icon: LucideIcons.brain, tag: '8 lessons', path: '/learn/wellbeing'),
+    (title: 'Doctor visits', icon: LucideIcons.shield, tag: '7 lessons', path: '/learn/doctor-visits'),
+    (title: 'Myths vs facts', icon: LucideIcons.sparkles, tag: '10 quick reads', path: '/learn/myths'),
+    (title: 'Exercises', icon: LucideIcons.dumbbell, tag: 'Practice safely', path: '/learn/exercises'),
   ];
 
   @override
@@ -85,7 +86,7 @@ class LearnScreen extends StatelessWidget {
                   childAspectRatio: 1.15,
                   children: _modules.map((m) {
                     return AppCard(
-                      onTap: () => context.go('/chat'),
+                      onTap: m.path == null ? null : () => context.push(m.path!),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,

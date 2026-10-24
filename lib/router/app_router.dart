@@ -3,13 +3,19 @@ import 'package:go_router/go_router.dart';
 import 'package:natal_iq/features/more/screens/caregiver_screen.dart';
 import 'package:natal_iq/features/chat/screens/chat_entry_screen.dart';
 import 'package:natal_iq/features/chat/screens/chat_thread_screen.dart';
+import 'package:natal_iq/features/community/screens/community_feed_screen.dart';
 import 'package:natal_iq/features/community/screens/community_screen.dart';
+import 'package:natal_iq/features/community/screens/create_community_screen.dart';
 import 'package:natal_iq/features/community/screens/create_post_screen.dart';
 import 'package:natal_iq/features/community/screens/post_detail_screen.dart';
 import 'package:natal_iq/features/more/screens/doctors_screen.dart';
 import 'package:natal_iq/features/home/screens/home_screen.dart';
 import 'package:natal_iq/features/journal/screens/journal_entry_screen.dart';
 import 'package:natal_iq/features/journal/screens/journal_screen.dart';
+import 'package:natal_iq/features/learn/screens/exercise_practice_screen.dart';
+import 'package:natal_iq/features/learn/screens/exercises_screen.dart';
+import 'package:natal_iq/features/learn/screens/learn_lesson_screen.dart';
+import 'package:natal_iq/features/learn/screens/learn_module_screen.dart';
 import 'package:natal_iq/features/more/screens/learn_screen.dart';
 import 'package:natal_iq/features/auth/screens/login_screen.dart';
 import 'package:natal_iq/features/more/screens/more_screen.dart';
@@ -58,14 +64,38 @@ final appRouter = GoRouter(
     ),
     GoRoute(path: '/track', builder: (context, state) => const TrackScreen()),
     GoRoute(path: '/community', builder: (context, state) => const CommunityScreen()),
-    GoRoute(path: '/community/compose', builder: (context, state) => const CreatePostScreen()),
+    GoRoute(path: '/community/new', builder: (context, state) => const CreateCommunityScreen()),
     GoRoute(
-      path: '/community/:postId',
+      path: '/community/:communityId',
+      builder: (context, state) => CommunityFeedScreen(communityId: state.pathParameters['communityId']!),
+    ),
+    GoRoute(
+      path: '/community/:communityId/compose',
+      builder: (context, state) => CreatePostScreen(communityId: state.pathParameters['communityId']!),
+    ),
+    GoRoute(
+      path: '/community/:communityId/post/:postId',
       builder: (context, state) => PostDetailScreen(postId: state.pathParameters['postId']!),
     ),
     GoRoute(path: '/more', builder: (context, state) => const MoreScreen()),
     GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
     GoRoute(path: '/learn', builder: (context, state) => const LearnScreen()),
+    GoRoute(path: '/learn/exercises', builder: (context, state) => const ExercisesScreen()),
+    GoRoute(
+      path: '/learn/exercises/:exerciseId',
+      builder: (context, state) => ExercisePracticeScreen(exerciseId: state.pathParameters['exerciseId']!),
+    ),
+    GoRoute(
+      path: '/learn/:moduleId',
+      builder: (context, state) => LearnModuleScreen(moduleId: state.pathParameters['moduleId']!),
+    ),
+    GoRoute(
+      path: '/learn/:moduleId/:lessonId',
+      builder: (context, state) => LearnLessonScreen(
+        moduleId: state.pathParameters['moduleId']!,
+        lessonId: state.pathParameters['lessonId']!,
+      ),
+    ),
     GoRoute(path: '/quiz', builder: (context, state) => const QuizScreen()),
     GoRoute(path: '/reminders', builder: (context, state) => const RemindersScreen()),
     GoRoute(path: '/videos', builder: (context, state) => const VideosScreen()),
